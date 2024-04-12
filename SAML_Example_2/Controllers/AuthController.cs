@@ -47,5 +47,19 @@ namespace SAML_Example_2.Controllers
             var returnUrl = relayStateQuery.ContainsKey(relayStateReturnUrl) ? relayStateQuery[relayStateReturnUrl] : Url.Content("~/");
             return Redirect(returnUrl);
         }
+
+        [HttpPost("Logout")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect(Url.Content("~/"));
+            }
+
+            var binding = new Saml2PostBinding();
+            var saml2LogoutRequest = await new Saml2LogoutRequest(config, User).DeleteSession(HttpContext);
+            return Redirect("~/");
+        }
     }
 }
