@@ -43,8 +43,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSaml2();
+
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
