@@ -4,6 +4,7 @@ using ITfoxtec.Identity.Saml2.Schemas;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SAML_Example_2.Identity;
 using System.Security.Authentication;
 
 namespace SAML_Example_2.Controllers
