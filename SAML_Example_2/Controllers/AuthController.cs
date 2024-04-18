@@ -27,7 +27,10 @@ namespace SAML_Example_2.Controllers
             var binding = new Saml2RedirectBinding();
             binding.SetRelayStateQuery(new Dictionary<string, string> { {  relayStateReturnUrl, returnUrl ?? Url.Content("~/") } });
 
-            return binding.Bind(new Saml2AuthnRequest(config)).ToActionResult();
+            var request = new Saml2AuthnRequest(config);
+            request.AssertionConsumerServiceUrl = new Uri("https://localhost:7007/Auth/AssertionConsumerService");
+
+            return binding.Bind(request).ToActionResult();
         }
 
         [Route("AssertionConsumerService")]
@@ -58,8 +61,7 @@ namespace SAML_Example_2.Controllers
                 return Redirect(Url.Content("~/"));
             }
 
-            var binding = new Saml2PostBinding();
-            var saml2LogoutRequest = await new Saml2LogoutRequest(config, User).DeleteSession(HttpContext);
+            await new Saml2LogoutRequest(config, User).DeleteSession(HttpContext);
             return Redirect("~/");
         }
     }
